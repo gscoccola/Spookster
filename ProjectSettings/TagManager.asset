@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - Enemy
+  - Ground
+  - EnemyWeakpoint
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Ladder
+  - Player
+  - Background
+  - Bouncing
+  - Hitbox
+  - Hazards
+  - Bullets
+  - Interactables
+  - Ejected Shells
+  - Ground Detection
+  - Furniture
+  - Dead Enemy
+  - Enemy
+  - Stunned Enemy
+  - BlankBlast
+  - EnemyWeakpoint
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 1381753117
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Water
+    uniqueID: 4221363089
+    locked: 0
+  - name: Platforms
+    uniqueID: 4167929087
+    locked: 0
+  - name: Hazards
+    uniqueID: 2622730509
+    locked: 0
+  - name: Enemies
+    uniqueID: 3633931337
+    locked: 0
+  - name: Player
+    uniqueID: 3341855115
+    locked: 0
+  - name: Gun
+    uniqueID: 788007619
+    locked: 0
+  - name: Interactables
+    uniqueID: 2206756941
+    locked: 0
+  m_RenderingLayers:
+  - Default
