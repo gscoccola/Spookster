@@ -1,2 +1,2 @@
 # Spookster
- A Video Game
+ A solo developed Video Game (although using free online assets)
