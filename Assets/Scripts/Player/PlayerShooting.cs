@@ -39,6 +39,7 @@ public class PlayerShooting : MonoBehaviour
     [Header("Bullets")]
     [SerializeField] float bulletSpeed = 40f;
 
+    GameManager gameManager;
     AudioPlayer audioPlayer;
     PlayerMovement playerMovement;
     Animator gunAnimator;
@@ -62,7 +63,7 @@ public class PlayerShooting : MonoBehaviour
         audioPlayer = FindAnyObjectByType<AudioPlayer>();
         gunAnimator = gun.GetComponent<Animator>();
         aimingDirection = new Vector3 (1, 0, 0);
-
+        gameManager = FindAnyObjectByType<GameManager>();
     }
 
     private void Update()
@@ -178,8 +179,9 @@ public class PlayerShooting : MonoBehaviour
             {
                 TiltGun(0);
                 isGunTilted = false;
-                playerMovement.SetisGunTilted();
+                playerMovement.SetIsGunTilted();
             }
+            gameManager.StartSlowMotion();
             inMenu = true;
             gunAnimator.SetBool("isOpen", true);
             audioPlayer.PlayOpeningClip();
@@ -217,7 +219,7 @@ public class PlayerShooting : MonoBehaviour
         if (playerMovement.tutorialStage == 4) { playerMovement.tutorialStage = 0; }
         if (inMenu)
         {
-            
+            gameManager.StopSlowMotion();
             inMenu = false;
             gunAnimator.SetBool("isOpen", false);
             audioPlayer.PlayOpeningClip();

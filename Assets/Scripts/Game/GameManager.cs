@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,8 +13,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] Canvas pauseScreen;
     [SerializeField] Button retryButton;
     [SerializeField] Button quitButton;
+
+    [SerializeField] Image timerOptionCross;
+    [SerializeField] Image slowmoOptionCross;
+
     AudioPlayer audioPlayer;
     bool[] levelCompletion;
+
+    int sceneIndex;
+
+    public bool isSlowMotionEnabled;
+    bool isSlowMotionActivated;
+    [SerializeField] const float slowMotionDuration = 3f;
+    [SerializeField] const float slowMotionPercentage = 0.5f;
+
+    public bool isTimerDisplayed;
+
+    public bool isTimerEnabled;
+    double levelTimer;
+
+    Coroutine currentSlowMoCoroutine;
 
     void Awake()
     {
@@ -27,6 +46,11 @@ public class GameManager : MonoBehaviour
     {
         audioPlayer.SwitchTrack();
         levelCompletion = new bool[10];
+    }
+
+    private void Update()
+    {
+        HandleLevelTimer();
     }
 
     void ManageSingleton()
@@ -65,7 +89,7 @@ public class GameManager : MonoBehaviour
     void UnPauseGame()
     {
         isPaused = false;
-        Time.timeScale = 1;
+        Time.timeScale = isSlowMotionActivated ? slowMotionPercentage : 1;
         pauseScreen.enabled = false;
         AudioListener.pause = false;
     }
@@ -108,5 +132,58 @@ public class GameManager : MonoBehaviour
             audioPlayer.SwitchTrack();
         }
         SceneManager.LoadScene(index);
+        sceneIndex = index;
+        levelTimer = 0.0;
+        isSlowMotionActivated = false;
+    }
+
+    public double GetLevelTime() => levelTimer;
+
+    public void ToggleLevelTimer()
+    {
+        isTimerEnabled = !isTimerEnabled;
+        timerOptionCross.enabled = isTimerEnabled;
+    }
+
+    public void ToggleSlowMotionOption()
+    {
+        isSlowMotionEnabled = !isSlowMotionEnabled;
+        slowmoOptionCross.enabled = isSlowMotionEnabled;
+    }
+
+    void HandleLevelTimer()
+    {
+        if (!isPaused) { levelTimer += Time.deltaTime;}
+        if (sceneIndex != 0 && isTimerEnabled)
+        {
+            isTimerDisplayed = true;
+            return;
+        }
+        isTimerDisplayed = false;
+    }
+
+    public void StartSlowMotion()
+    {
+        if (!isSlowMotionEnabled) { return; }
+        isSlowMotionActivated = true;
+        Time.timeScale = slowMotionPercentage;
+        currentSlowMoCoroutine = StartCoroutine(SlowMotionCoroutine());
+    }
+
+    public void StopSlowMotion()
+    {
+        if (currentSlowMoCoroutine is not null)
+        {
+            StopCoroutine(currentSlowMoCoroutine);
+            Time.timeScale = 1;
+            isSlowMotionActivated = false;
+        }
+    }
+
+    public IEnumerator SlowMotionCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(slowMotionDuration);
+        Time.timeScale = 1;
+        isSlowMotionActivated = false;
     }
 }

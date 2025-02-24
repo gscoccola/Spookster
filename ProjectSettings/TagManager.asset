@@ -68,5 +68,8 @@ TagManager:
   - name: Interactables
     uniqueID: 2206756941
     locked: 0
+  - name: Text
+    uniqueID: 957316957
+    locked: 0
   m_RenderingLayers:
   - Default

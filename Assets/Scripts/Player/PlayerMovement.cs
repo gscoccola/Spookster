@@ -244,7 +244,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void SetisGunTilted()
+    public void SetIsGunTilted()
     {
         gunTilt = 0;
     }

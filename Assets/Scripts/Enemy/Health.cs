@@ -54,6 +54,10 @@ public class Health : MonoBehaviour
                 
                 if (!hasExploded)
                 {
+                    CircleCollider2D mCollider = GetComponent<CircleCollider2D>();
+                    mCollider.radius = 0.12f;
+                    mCollider.offset = new Vector2(-0.07f, -0.3f);
+
                     hasExploded = true;
                     enemyMovement.SetLayerOnDeath();
                     int randomInt = Random.Range(0, remains.Count+1);

@@ -130,7 +130,7 @@ MonoBehaviour:
   isAlive: 1
   footstepsDelay: 0.4
   climbSpeed: 5
-  jumpSpeed: 12
+  jumpSpeed: 13
   runSpeed: 6
   groundAcceleration: 90
   airAcceleration: 20
