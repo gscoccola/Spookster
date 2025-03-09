@@ -65,6 +65,10 @@ public class AudioPlayer : MonoBehaviour
     [SerializeField] AudioClip[] damageClips;
     [SerializeField][Range(0f, 1f)] float[] damageVolumes;
 
+    [Header("Heartbeat")]
+    [SerializeField] AudioClip heartbeatClip;
+    [SerializeField][Range(0f, 1f)] float heartbeatVolume;
+
     [Header("Music")]
     [SerializeField] AudioResource song0;
     [SerializeField] AudioResource song1;
@@ -73,8 +77,6 @@ public class AudioPlayer : MonoBehaviour
     static AudioPlayer instance;
 
     AudioSource audioSource;
-
-
 
     void Awake()
     {
@@ -276,6 +278,12 @@ public class AudioPlayer : MonoBehaviour
     }
 
 
+    internal void PlayHearbeatClip()
+    {
+        PlayClipAtPoint(heartbeatClip,
+            Vector3.zero, heartbeatVolume, UnityEngine.Random.Range(0.95f, 1.05f));
+    }
+
     public static AudioSource PlayClipAtPoint(AudioClip clip, Vector3 pos, float volume = 1, float pitch = 1, bool dontDestroyOnLoad = false)
     {
         GameObject tempGO = new GameObject("TempAudio"); // create the temp object
@@ -293,4 +301,5 @@ public class AudioPlayer : MonoBehaviour
         MonoBehaviour.Destroy(tempGO, tempASource.clip.length); // destroy object after clip duration (this will not account for whether it is set to loop)
         return tempASource; // return the AudioSource reference
     }
+
 }

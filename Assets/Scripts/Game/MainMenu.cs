@@ -2,15 +2,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
+using Unity.Mathematics;
+using System.Collections;
 
 public class MainMenu : MonoBehaviour
 {
+    [Header("Params")]
+    [SerializeField] float outerLayerMovementRatio = 6f;
+    [SerializeField] float innerLayerMovementRatio = 4f;
+    [SerializeField] float textLayerMovementRatio = 10f;
+    [SerializeField] float outerVibrationAmplitude = 0.1f;
+    [SerializeField] float innerVibrationAmplitude = 0.1f;
+    [SerializeField] float twitchPeriod = 2.5f;
+    [SerializeField] float twitchDuration = 0.1f;
+
     [Header("Parallax images")]
     [SerializeField] RawImage outerImage;
     [SerializeField] RawImage innerImage;
-    [SerializeField] float outerLayerMovementRatio = 6f;
-    [SerializeField] float innerLayerMovementRatio = 4f;
-
 
     [Header("Main Menu")]
     [SerializeField] GameObject mainMenu;
@@ -30,6 +39,12 @@ public class MainMenu : MonoBehaviour
     AudioPlayer audioPlayer;
     Vector3 startingPos;
     GameManager gameManager;
+    System.Random random;
+    int framesPassed;
+    Vector3 randomVectorInner, randomVectorOuter;
+    bool isTwitching;
+
+
 
     private void Awake()
     {
@@ -57,11 +72,39 @@ public class MainMenu : MonoBehaviour
         hardLevelButtonList[1].onClick.AddListener(() => LoadLevel(10));
     }
 
+    private void Start()
+    {
+        random = new System.Random();
+        StartCoroutine(ITwitching());
+    }
+
     void Update()
     {
-        this.transform.position = startingPos + (Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2, 0)) / 20;
-        outerImage.transform.position = startingPos + (Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2, 0)) / outerLayerMovementRatio;
-        innerImage.transform.position = startingPos + (Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2, 0)) / innerLayerMovementRatio;
+        if (isTwitching)
+        {
+            float randomAngleInner = (float)random.NextDouble() * 2 * MathF.PI;
+            float randomAngleOuter = (float)random.NextDouble() * 2 * MathF.PI;
+            randomVectorInner = new Vector3(Mathf.Cos(randomAngleInner), Mathf.Sin(randomAngleInner), 0f) * innerVibrationAmplitude;
+            randomVectorOuter = new Vector3(Mathf.Cos(randomAngleOuter), Mathf.Sin(randomAngleOuter), 0f) * outerVibrationAmplitude;
+        }
+
+        this.transform.position = startingPos - (Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2, 0)) / textLayerMovementRatio;
+
+        outerImage.transform.position = startingPos + randomVectorOuter +
+            (Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2, 0)) / outerLayerMovementRatio;
+
+        innerImage.transform.position = startingPos + randomVectorInner +
+            (Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2, 0)) / innerLayerMovementRatio;
+    }
+
+    IEnumerator ITwitching()
+    {
+        yield return new WaitForSecondsRealtime(twitchPeriod - twitchDuration);
+        isTwitching = true;
+        audioPlayer.PlayHearbeatClip();
+        yield return new WaitForSecondsRealtime(twitchDuration);
+        isTwitching = false;
+        StartCoroutine(ITwitching());
     }
 
     void DisplayLevels()

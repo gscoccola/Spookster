@@ -431,6 +431,8 @@ MonoBehaviour:
   damageVolumes:
   - 0.28
   - 0.22
+  heartbeatClip: {fileID: 8300000, guid: baf6ad57fb15cff4383adbdab8d2297b, type: 3}
+  heartbeatVolume: 0.956
   song0: {fileID: 8300000, guid: 8e0e3fb038600bf419d0dc5d614d07f9, type: 3}
   song1: {fileID: 8300000, guid: 34d792c67ae8c174eaf3336141b3c38f, type: 3}
   song2: {fileID: 8300000, guid: 3b2858d3179fa9240b18c298dbf7cb70, type: 3}
