@@ -8,9 +8,11 @@ public class OptionButtons : MonoBehaviour
     GameManager gameManager;
     Image timerButtonCross;
     Image slowMotionButtonCross;
+    AudioPlayer audioPlayer;
 
     private void Awake()
     {
+        audioPlayer = FindAnyObjectByType<AudioPlayer>();
         gameManager = FindAnyObjectByType<GameManager>();
         timerButtonCross = levelTimerButton.transform.GetChild(1).GetComponent<Image>();
         slowMotionButtonCross = slowMotionButton.transform.GetChild(1).GetComponent<Image>();
@@ -36,12 +38,14 @@ public class OptionButtons : MonoBehaviour
 
     void ToggleTimer()
     {
+        audioPlayer.PlayDryFireClip();
         gameManager.ToggleLevelTimer();
         timerButtonCross.enabled = gameManager.isTimerEnabled;
     }
 
     void ToggleSlowMotion()
     {
+        audioPlayer.PlayDryFireClip();
         gameManager.ToggleSlowMotionOption();
         slowMotionButtonCross.enabled = gameManager.isSlowMotionEnabled;
     }

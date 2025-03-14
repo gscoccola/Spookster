@@ -35831,6 +35831,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cameras
       objectReference: {fileID: 0}
+    - target: {fileID: 1218631075995859809, guid: 2285968b524e19341a2e3f437ff4b05e, type: 3}
+      propertyPath: Composition.DeadZone.Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1441060036494769291, guid: 2285968b524e19341a2e3f437ff4b05e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.43607
