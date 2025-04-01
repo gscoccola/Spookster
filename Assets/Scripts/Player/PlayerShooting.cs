@@ -39,8 +39,6 @@ public class PlayerShooting : MonoBehaviour
     [Header("Bullets")]
     [SerializeField] float bulletSpeed = 40f;
 
-    GameManager gameManager;
-    AudioPlayer audioPlayer;
     PlayerMovement playerMovement;
     Animator gunAnimator;
     Rigidbody2D myRigidBody;
@@ -60,10 +58,8 @@ public class PlayerShooting : MonoBehaviour
     {
         myRigidBody = GetComponent<Rigidbody2D>();
         playerMovement = FindAnyObjectByType<PlayerMovement>();
-        audioPlayer = FindAnyObjectByType<AudioPlayer>();
         gunAnimator = gun.GetComponent<Animator>();
         aimingDirection = new Vector3 (1, 0, 0);
-        gameManager = FindAnyObjectByType<GameManager>();
     }
 
     private void Update()
@@ -94,26 +90,26 @@ public class PlayerShooting : MonoBehaviour
         if (playerMovement.IsDisabled() || inMenu) { return; }
         if (ammoLoaded[barrelNumber] == 0 || ammoSpent[barrelNumber]==1)
         {
-            audioPlayer.PlayDryFireClip();
+            AudioPlayer.Instance.PlayDryFireClip();
             return;
         }
         
         if (ammoLoaded[barrelNumber] == 1)
         {
-            audioPlayer.PlayShootingClip1();
+            AudioPlayer.Instance.PlayShootingClip1();
             ShootSpread();
         }
             
         else if (ammoLoaded[barrelNumber] == 2)
         {
             ShootBullet();
-            audioPlayer.PlayShootingClip2();
+            AudioPlayer.Instance.PlayShootingClip2();
         }
             
         else if (ammoLoaded[barrelNumber] == 3)
         {
             ShootBlank();
-            audioPlayer.PlayShootingClip3();
+            AudioPlayer.Instance.PlayShootingClip3();
         }
         ammoSpent[barrelNumber] = 1;
         DisplayShell(barrelNumber);
@@ -138,7 +134,7 @@ public class PlayerShooting : MonoBehaviour
 
         int loadedShellType = ammoLoaded[barrelNumber];
         ammoLoaded[barrelNumber] = shellType;
-        audioPlayer.PlayReloadingClip();
+        AudioPlayer.Instance.PlayReloadingClip();
         DisplayShell(barrelNumber);
         return loadedShellType;
     }
@@ -181,10 +177,10 @@ public class PlayerShooting : MonoBehaviour
                 isGunTilted = false;
                 playerMovement.SetIsGunTilted();
             }
-            gameManager.StartSlowMotion();
+            GameManager.Instance.StartSlowMotion();
             inMenu = true;
             gunAnimator.SetBool("isOpen", true);
-            audioPlayer.PlayOpeningClip();
+            AudioPlayer.Instance.PlayOpeningClip();
             for (int i = 0; i < 2; i++)
             {
                 if (ejectorEnabled)
@@ -219,10 +215,10 @@ public class PlayerShooting : MonoBehaviour
         if (playerMovement.tutorialStage == 4) { playerMovement.tutorialStage = 0; }
         if (inMenu)
         {
-            gameManager.StopSlowMotion();
+            GameManager.Instance.StopSlowMotion();
             inMenu = false;
             gunAnimator.SetBool("isOpen", false);
-            audioPlayer.PlayOpeningClip();
+            AudioPlayer.Instance.PlayOpeningClip();
         }
     }
 

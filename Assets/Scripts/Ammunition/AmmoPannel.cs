@@ -5,12 +5,6 @@ using UnityEngine;
 public class AmmoPannel : MonoBehaviour
 {
     [SerializeField] List<GameObject> shellSlots = new List<GameObject>();
-    AudioPlayer audioPlayer;
-
-    private void Awake()
-    {
-        audioPlayer = FindAnyObjectByType<AudioPlayer>();
-    }
 
     void SetShellType(int i, int shellType)
     {
@@ -30,7 +24,7 @@ public class AmmoPannel : MonoBehaviour
             currentShellType = shellSlots[currentIndex].GetComponent<Shell>().GetShellType();
         }
         shellSlots[currentIndex].GetComponent<Shell>().OnShellPickup(pickedUpType);
-        audioPlayer.PlayPickupClip();
+        AudioPlayer.Instance.PlayPickupClip();
         return true;
         //Debug.Log(currentIndex + " has been set to " + pickedUpType);
     }

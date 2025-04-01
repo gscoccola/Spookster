@@ -11,14 +11,13 @@ public class LevelTimer : MonoBehaviour
 
     private void Awake()
     {
-        gameManager = FindAnyObjectByType<GameManager>();
         levelTimer = GetComponent<TextMeshProUGUI>();
     }
 
     void Update()
     {
-        levelTimer.text = Math.Round(gameManager.GetLevelTime(), 2).ToString();
-        if (gameManager.isTimerDisplayed)
+        levelTimer.text = Math.Round(GameManager.Instance.GetLevelTime(), 2).ToString();
+        if (GameManager.Instance.isTimerDisplayed)
         {
             levelTimer.enabled = true;
             return;

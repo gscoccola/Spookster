@@ -12,7 +12,6 @@ public class LevelExit : MonoBehaviour
     Slider slider;
     bool isPlayerInside;
     AudioSource audioSource;
-    GameManager gameManager;
     bool hasFoundManager;
 
     private void Start()
@@ -51,11 +50,6 @@ public class LevelExit : MonoBehaviour
 
     private void Update()
     {
-        if (!hasFoundManager)
-        {
-            hasFoundManager = true;
-            gameManager = FindAnyObjectByType<GameManager>();
-        }
 
         if (!isPlayerInside)
         {
@@ -71,7 +65,7 @@ public class LevelExit : MonoBehaviour
             
             if (slider.value == 0)
             {
-                gameManager.LoadNextLevel();
+                GameManager.Instance.LoadNextLevel();
             }
         }
     }

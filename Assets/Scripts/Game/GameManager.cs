@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using System;
 using TMPro;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     bool isPaused = false;
     [SerializeField] Canvas pauseScreen;
@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] Image timerOptionCross;
     [SerializeField] Image slowmoOptionCross;
 
-    AudioPlayer audioPlayer;
     bool[] levelCompletion;
 
     int sceneIndex;
@@ -34,17 +33,12 @@ public class GameManager : MonoBehaviour
 
     Coroutine currentSlowMoCoroutine;
 
-    void Awake()
-    {
-        audioPlayer = FindAnyObjectByType<AudioPlayer>();
-        retryButton.onClick.AddListener(ReloadLevel);
-        quitButton.onClick.AddListener(ExitLevel);
-        ManageSingleton();
-    }
 
     private void Start()
     {
-        audioPlayer.SwitchTrack();
+        retryButton.onClick.AddListener(ReloadLevel);
+        quitButton.onClick.AddListener(ExitLevel);
+        AudioPlayer.Instance.SwitchTrack();
         levelCompletion = new bool[10];
     }
 
@@ -129,7 +123,7 @@ public class GameManager : MonoBehaviour
         UnPauseGame();
         if (index != SceneManager.GetActiveScene().buildIndex)
         {
-            audioPlayer.SwitchTrack();
+            AudioPlayer.Instance.SwitchTrack();
         }
         SceneManager.LoadScene(index);
         sceneIndex = index;

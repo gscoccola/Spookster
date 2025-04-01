@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
-//using static UnityEditor.PlayerSettings;
 
-public class AudioPlayer : MonoBehaviour
+
+public class AudioPlayer : Singleton<AudioPlayer>
 {
 
 
@@ -78,30 +78,10 @@ public class AudioPlayer : MonoBehaviour
 
     AudioSource audioSource;
 
-    void Awake()
+    private void Start()
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.ignoreListenerPause = true;
-        ManageSingleton();
-    }
-
-    void ManageSingleton()
-    {
-        if (instance != null)
-        {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
-
-    private void Update()
-    {
-        
     }
 
     public void SwitchTrack()

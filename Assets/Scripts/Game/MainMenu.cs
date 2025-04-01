@@ -36,9 +36,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject optionsMenu;
     [SerializeField] Button backButton2;
 
-    AudioPlayer audioPlayer;
     Vector3 startingPos;
-    GameManager gameManager;
     System.Random random;
     int framesPassed;
     Vector3 randomVectorInner, randomVectorOuter;
@@ -48,7 +46,6 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
-        audioPlayer = FindAnyObjectByType<AudioPlayer>();
         startingPos = outerImage.transform.position;
         levelSelectButton.onClick.AddListener(DisplayLevels);
         optionsButton.onClick.AddListener(DisplayOptions);
@@ -101,7 +98,7 @@ public class MainMenu : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(twitchPeriod - twitchDuration);
         isTwitching = true;
-        audioPlayer.PlayHearbeatClip();
+        AudioPlayer.Instance.PlayHearbeatClip();
         yield return new WaitForSecondsRealtime(twitchDuration);
         isTwitching = false;
         StartCoroutine(ITwitching());
@@ -109,37 +106,36 @@ public class MainMenu : MonoBehaviour
 
     void DisplayLevels()
     {
-        audioPlayer.PlayReloadingClip();
+        AudioPlayer.Instance.PlayReloadingClip();
         levelSelectMenu.SetActive(true);
         mainMenu.SetActive(false);
     }
 
     void ReturnFromLevelSelect()
     {
-        audioPlayer.PlayDryFireClip();
+        AudioPlayer.Instance.PlayDryFireClip();
         levelSelectMenu.SetActive(false);
         mainMenu.SetActive(true);
     }
 
     void DisplayOptions()
     {
-        audioPlayer.PlayReloadingClip();
+        AudioPlayer.Instance.PlayReloadingClip();
         optionsMenu.SetActive(true);
         mainMenu.SetActive(false);
     }
 
     void ReturnFromOptions()
     {
-        audioPlayer.PlayDryFireClip();
+        AudioPlayer.Instance.PlayDryFireClip();
         optionsMenu.SetActive(false);
         mainMenu.SetActive(true);
     }
 
     void LoadLevel(int index)
     {
-        gameManager = FindAnyObjectByType<GameManager>();
-        audioPlayer.PlayShootingClip1(true);
-        gameManager.LoadLevel(index);
+        AudioPlayer.Instance.PlayShootingClip1(true);
+        GameManager.Instance.LoadLevel(index);
     }
 
 }

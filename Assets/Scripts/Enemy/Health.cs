@@ -9,7 +9,6 @@ public class Health : MonoBehaviour
     BanditMovement banditMovement;
     EnemyMovement enemyMovement;
     bool isBandit;
-    AudioPlayer audioPlayer;
 
     [SerializeField] GameObject blood;
     [SerializeField] GameObject gooberChunks;
@@ -26,7 +25,6 @@ public class Health : MonoBehaviour
     {
         isBandit = TryGetComponent<BanditMovement>(out banditMovement);
         TryGetComponent<EnemyMovement>(out enemyMovement);
-        audioPlayer = FindAnyObjectByType<AudioPlayer>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -63,12 +61,12 @@ public class Health : MonoBehaviour
                     int randomInt = Random.Range(0, remains.Count+1);
                     if (randomInt == remains.Count)
                     {
-                        audioPlayer.PlayLoudSplatterClip();
+                        AudioPlayer.Instance.PlayLoudSplatterClip();
                         spriteRenderer.enabled = false;
                     }
                     else
                     {
-                        audioPlayer.PlaySplatterClip();
+                        AudioPlayer.Instance.PlaySplatterClip();
                         spriteRenderer.sprite = remains[randomInt];
                     }
                     for (int i = 0; i < randomInt+1; i++)
@@ -84,7 +82,7 @@ public class Health : MonoBehaviour
             {
                 if (!banditMovement.hasHeadExploded)
                 {
-                    audioPlayer.PlayLoudSplatterClip();
+                    AudioPlayer.Instance.PlayLoudSplatterClip();
                     Instantiate(blood, transform.position, Quaternion.identity);
                     Instantiate(blood, transform.position, Quaternion.identity);
                     Instantiate(banditChunks, transform.position + new Vector3(0f, 1.4f, 0f), Quaternion.identity);
@@ -97,8 +95,8 @@ public class Health : MonoBehaviour
         {
             canBleed = false;
             Instantiate(blood, transform.position, Quaternion.identity);
-            audioPlayer.PlayDamageClip();
-            audioPlayer.PlayDamageClip();
+            AudioPlayer.Instance.PlayDamageClip();
+            AudioPlayer.Instance.PlayDamageClip();
             yield return new WaitForSeconds(bleedTimeDelay);
             canBleed = true;
         }

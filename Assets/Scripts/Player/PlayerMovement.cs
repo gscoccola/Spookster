@@ -14,10 +14,7 @@ public class PlayerMovement : MonoBehaviour
     BoxCollider2D myCollider;
     CapsuleCollider2D myFeetCollider;
     SpriteRenderer mySpriteRenderer;
-    GameSession gameSession;
-    AudioPlayer audioPlayer;
     PlayerShooting playerShooting;
-    GameManager gameManager;
 
     CameraTarget cameraTarget;
     float lookDirection = 0;
@@ -57,19 +54,12 @@ public class PlayerMovement : MonoBehaviour
         defaultGravity = myRigidBody.gravityScale;
         myCollider = GetComponent<BoxCollider2D>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
-        gameSession = FindAnyObjectByType<GameSession>();
-        audioPlayer = FindAnyObjectByType<AudioPlayer>();
         playerShooting = GetComponent<PlayerShooting>();
         cameraTarget = FindAnyObjectByType<CameraTarget>();
     }
 
     void Update()
     {
-        if (!hasFoundManager)
-        {
-            hasFoundManager = true;
-            gameManager = FindAnyObjectByType<GameManager>();
-        }
 
         Run();
         IsOnFloorOrLadder();
@@ -132,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator PlayFootsteps()
     {
         isPlayingFootsteps = true;
-        audioPlayer.PlayFootstepsClip();
+        AudioPlayer.Instance.PlayFootstepsClip();
         yield return new WaitForSeconds(footstepsDelay);
         isPlayingFootsteps = false;
     }
@@ -166,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
         if (value.isPressed)
         {
             myRigidBody.linearVelocityY = jumpSpeed;
-            audioPlayer.PlayJumpClip();
+            AudioPlayer.Instance.PlayJumpClip();
         }
     }
 
@@ -174,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if ( collision.relativeVelocity.magnitude > 5f)
         {
-            audioPlayer.PlayLandingClip();
+            AudioPlayer.Instance.PlayLandingClip();
         }
     }
 
@@ -253,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (myCollider.IsTouchingLayers(LayerMask.GetMask("Hazards", "Hitbox")))
         {
-            audioPlayer.PlayDeathClip();
+            AudioPlayer.Instance.PlayDeathClip();
             isAlive = false;
             myAnimator.SetTrigger("dying");
             mySpriteRenderer.color = Color.red;
@@ -262,20 +252,20 @@ public class PlayerMovement : MonoBehaviour
             {
                 playerShooting.isAlive = false;
             }
-            StartCoroutine(gameManager.ReloadSceneCoroutine());
+            StartCoroutine(GameManager.Instance.ReloadSceneCoroutine());
         }
     }
 
 
     void OnReloadLevel(InputValue value)
     {
-        gameManager.ReloadLevel();
+        GameManager.Instance.ReloadLevel();
         isPaused = false;
     }
 
     void OnPause(InputValue value)
     {
-        gameManager.TogglePause();
+        GameManager.Instance.TogglePause();
         isPaused = !isPaused;
     }
 

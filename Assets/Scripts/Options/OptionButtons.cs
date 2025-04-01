@@ -5,15 +5,11 @@ public class OptionButtons : MonoBehaviour
 {
     [SerializeField] Button levelTimerButton;
     [SerializeField] Button slowMotionButton;
-    GameManager gameManager;
     Image timerButtonCross;
     Image slowMotionButtonCross;
-    AudioPlayer audioPlayer;
 
     private void Awake()
     {
-        audioPlayer = FindAnyObjectByType<AudioPlayer>();
-        gameManager = FindAnyObjectByType<GameManager>();
         timerButtonCross = levelTimerButton.transform.GetChild(1).GetComponent<Image>();
         slowMotionButtonCross = slowMotionButton.transform.GetChild(1).GetComponent<Image>();
         levelTimerButton.onClick.AddListener(ToggleTimer);
@@ -24,8 +20,8 @@ public class OptionButtons : MonoBehaviour
     {
 
         //SetButtons();
-        timerButtonCross.enabled = gameManager.isTimerEnabled;
-        slowMotionButtonCross.enabled = gameManager.isSlowMotionEnabled;
+        timerButtonCross.enabled = GameManager.Instance.isTimerEnabled;
+        slowMotionButtonCross.enabled = GameManager.Instance.isSlowMotionEnabled;
 
         //gameObject.SetActive(false);
     }
@@ -38,15 +34,15 @@ public class OptionButtons : MonoBehaviour
 
     void ToggleTimer()
     {
-        audioPlayer.PlayDryFireClip();
-        gameManager.ToggleLevelTimer();
-        timerButtonCross.enabled = gameManager.isTimerEnabled;
+        AudioPlayer.Instance.PlayDryFireClip();
+        GameManager.Instance.ToggleLevelTimer();
+        timerButtonCross.enabled = GameManager.Instance.isTimerEnabled;
     }
 
     void ToggleSlowMotion()
     {
-        audioPlayer.PlayDryFireClip();
-        gameManager.ToggleSlowMotionOption();
-        slowMotionButtonCross.enabled = gameManager.isSlowMotionEnabled;
+        AudioPlayer.Instance.PlayDryFireClip();
+        GameManager.Instance.ToggleSlowMotionOption();
+        slowMotionButtonCross.enabled = GameManager.Instance.isSlowMotionEnabled;
     }
 }

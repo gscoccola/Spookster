@@ -24,7 +24,6 @@ public class BanditMovement : MonoBehaviour
 
     Health health;
     SpriteRendererTextureSwap textureSwap;
-    AudioPlayer audioPlayer;
     Animator m_animator;
     Rigidbody2D m_body2d;
     bool isDead;
@@ -36,13 +35,11 @@ public class BanditMovement : MonoBehaviour
 
     void Start()
     {
-        audioPlayer = FindAnyObjectByType<AudioPlayer>();
         m_animator = GetComponent<Animator>();
         m_body2d = GetComponent<Rigidbody2D>();
         textureSwap = GetComponent<SpriteRendererTextureSwap>();
         health = GetComponent<Health>();
         xScale = transform.localScale.x;
-        //m_collider.enabled = false;
     }
 
     void Update()
@@ -163,7 +160,7 @@ public class BanditMovement : MonoBehaviour
             yield return new WaitForSeconds(0.4f - parryTimeWindow / 2);
             //hitbox frames
             parryWindow = false;
-            if (!isStunned){audioPlayer.PlaySlashClip();}
+            if (!isStunned){AudioPlayer.Instance.PlaySlashClip();}
             
             this.gameObject.layer = LayerMask.NameToLayer("Hitbox");
             m_body2d.linearVelocity = new Vector2(boostSpeed * Mathf.Sign(playerDistance), m_body2d.linearVelocity.y);
@@ -215,7 +212,7 @@ public class BanditMovement : MonoBehaviour
     public void Parry()
     {
         if (!parryWindow) { return; }
-        audioPlayer.PlayParryClip();
+        AudioPlayer.Instance.PlayParryClip();
         m_animator.SetTrigger("Hurt");
         this.gameObject.layer = LayerMask.NameToLayer("Stunned Enemy");
         parryWindow = false;
